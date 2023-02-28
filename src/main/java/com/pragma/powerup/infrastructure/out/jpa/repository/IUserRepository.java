@@ -8,10 +8,7 @@ import java.util.Optional;
 
 public interface IUserRepository extends JpaRepository<UserEntity,Long> {
 
-
-    UserEntity getUserByDocumentNumber(String documentNumber);
-
     UserEntity findOneByEmail(String email);
     UserEntity findOneByPassword(String password);
-    UserEntity getUserByEmailAndPassword(String email, String password);
+
 }

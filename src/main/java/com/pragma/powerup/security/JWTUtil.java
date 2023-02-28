@@ -37,15 +37,10 @@ public class JWTUtil {
         return  Jwts.parser().setSigningKey(KEY).parseClaimsJws(token).getBody();
     }
 
-    /**
-     *  Verify if Token is Expired
-     * @param token  = token to Verify
-     * @return True is Expired - False is not Expired
-     */
     public boolean isTokenExpired(String token){
         return  getClaims(token).getExpiration().before(new Date());
     }
     public  String extractUsername(String token){
-        return  getClaims(token).getSubject();  //Extraer el Usuario de la peticion
+        return  getClaims(token).getSubject();
     }
 }

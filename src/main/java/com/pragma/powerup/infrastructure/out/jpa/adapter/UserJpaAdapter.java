@@ -33,11 +33,6 @@ public class UserJpaAdapter implements IUserPersistencePort {
 
     }
 
-    @Override
-    public UserModel getUserByDocumentNumber(String documentNumber) {
-        UserEntity userEntity =userRepository.getUserByDocumentNumber(documentNumber);
-        return entityMapper.toUserModel(userEntity);
-    }
 
     @Override
     public UserModel findOneByEmail(String email) {
@@ -51,10 +46,6 @@ public class UserJpaAdapter implements IUserPersistencePort {
         return entityMapper.toUserModel(userEntity);
     }
 
-    @Override
-    public UserModel getUserByEmailAndPassword(String email, String password) {
-        UserEntity userEntity =userRepository.getUserByEmailAndPassword(email,password);
-        return entityMapper.toUserModel(userEntity);
-    }
+
 
 }

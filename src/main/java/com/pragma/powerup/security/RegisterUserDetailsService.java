@@ -33,9 +33,7 @@ public class RegisterUserDetailsService implements UserDetailsService {
         if (userModel != null) {
             Set<GrantedAuthority> authorities = new HashSet<>();
             Optional<RoleEntity> result = roleRepository.findById(userModel.getRoleId());
-            if (result.isPresent()) {
-                authorities.add(new SimpleGrantedAuthority(result.get().getName()));
-            }
+            result.ifPresent(roleEntity -> authorities.add(new SimpleGrantedAuthority(roleEntity.getName())));
             return new User(userModel.getEmail(), userModel.getPassword(), authorities);
         }
         throw new UsernameNotFoundException("Username Not Found");

@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 
 import org.junit.jupiter.api.Assertions;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,18 +29,15 @@ class UserJpaAdapterTest {
     private  IUserRepository userRepositoryMock;
     @Mock
     private  IUserEntityMapper entityMapperMock;
-    @Mock
-    private  PasswordEncoder passwordEncoderMock;
 
     @InjectMocks
     UserJpaAdapter userJpaAdapterMock;
 
 
-    /*
     @Test
     void saveUser() {
         UserModel userModelMock = new UserModel(1L,"1234","Pepe"
-        ,"veraz","12345","notiene@gmail.com"
+                ,"veraz","12345","notiene@gmail.com"
                 ,"123456",2L);
 
         UserEntity userEntityMock = new UserEntity(1L,"1234",
@@ -47,7 +45,7 @@ class UserJpaAdapterTest {
 
 
         Mockito.when(entityMapperMock.toEntity(any()))
-                        .thenReturn(userEntityMock);
+                .thenReturn(userEntityMock);
 
         Mockito.when(userRepositoryMock.save(any()))
                 .thenReturn(userEntityMock);
@@ -62,10 +60,23 @@ class UserJpaAdapterTest {
 
     }
 
+    @Test
+    void getAllUsers() {
 
-     */
+        Mockito.when(userRepositoryMock.findAll()).thenReturn(List.of());
 
-    /*
+        Mockito.when(entityMapperMock.toUserModelList(any()))
+                .thenReturn(List.of(
+                        new UserModel(1L,"1234","Pepe"
+                                ,"veraz","12345","notiene@gmail.com"
+                                ,"123456",2L)
+                ));
+
+        var result = userJpaAdapterMock.getAllUsers();
+
+        Assertions.assertEquals(1L,result.get(0).getId());
+    }
+
     @Test
     void findByID() {
 
@@ -80,14 +91,42 @@ class UserJpaAdapterTest {
                 .thenReturn(java.util.Optional.of(userEntityMock));
 
         Mockito.when(entityMapperMock.toUserModel(any()))
-                        .thenReturn(userModelMock);
+                .thenReturn(userModelMock);
 
-       UserModel model = userJpaAdapterMock.findByID(1L);
+        UserModel model = userJpaAdapterMock.findByID(1L);
 
         assertEquals(1L,model.getId());
 
 
     }
 
-     */
+
+    @Test
+    void findOneByEmail() {
+        UserModel userModelMock = new UserModel(1L,"1234","Pepe"
+                ,"veraz","12345","notiene@gmail.com"
+                ,"123456",2L);
+
+        UserEntity userEntityMock = new UserEntity(1L,"1234",
+                "pepe","veraz","234567","sitiene@gmail.com","34567",2L);
+
+      Mockito.when(userRepositoryMock.findOneByEmail(any())).thenReturn(userEntityMock);
+      Mockito.when(entityMapperMock.toUserModel(any()))
+              .thenReturn(userModelMock);
+
+      UserModel userModel = userJpaAdapterMock.findOneByEmail(any());
+
+      assertEquals("veraz",userModel.getLastName());
+
+    }
+
+
+
+
+
+
+
+
+
+
 }

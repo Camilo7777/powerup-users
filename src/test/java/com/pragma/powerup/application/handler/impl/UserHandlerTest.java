@@ -12,7 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,13 +24,15 @@ import static org.mockito.ArgumentMatchers.anyLong;
 @ExtendWith(SpringExtension.class)
 class UserHandlerTest {
     @Mock
-    private  IUserServicePort userServicePort;
+    private  IUserServicePort userServicePortMock;
 
     @Mock
-    private  IUserRequestMapper userRequestMapper;
+    private  IUserRequestMapper userRequestMapperMock;
 
     @Mock
-    private  IUserResponseMapper userResponseMapper;
+    private  IUserResponseMapper userResponseMapperMock;
+   @Mock
+    private PasswordEncoder passwordEncoderMock;
 
     @InjectMocks
     private UserHandler userHandlerMock;
@@ -36,7 +41,7 @@ class UserHandlerTest {
     void saveUser() {
         UserRequestDto userRequestDtoMock =  UserRequestDto.builder()
                 .id(1L)
-                .id(2L)
+                .roleId(2L)
                 .phone("234")
                 .email("sitiene@gmail.com")
                 .documentNumber("12345")
@@ -45,26 +50,29 @@ class UserHandlerTest {
                 .password("dfsghjd")
                 .build();
 
-        Mockito.when(userRequestMapper.toUser(any()))
+
+Mockito.when(passwordEncoderMock.encode(any())).thenReturn("ecfqrwe318");
+        Mockito.when(userRequestMapperMock.toUser(any()))
                         .thenReturn(new UserModel());
 
         Mockito.doNothing()
-                .when(userServicePort).saveUser(any());
+                .when(userServicePortMock).saveUser(any());
+
 
         userHandlerMock.saveUser(userRequestDtoMock);
-        Mockito.verify(userServicePort,Mockito.times(1))
+        Mockito.verify(userServicePortMock,Mockito.times(1))
                 .saveUser(any());
 
     }
 
-    /*
+
 
     @Test
     void findByID() {
 
         UserResponseDto userResponseDto =  UserResponseDto.builder()
                 .id(1L)
-                .idRol(2L)
+                .roleId(2L)
                 .phone("234")
                 .email("sitiene@gmail.com")
                 .documentNumber("12345")
@@ -73,20 +81,43 @@ class UserHandlerTest {
                 .password("dfsghjd")
                 .build();
 
-        Mockito.when(userServicePort.findByID(anyLong()))
+        Mockito.when(userServicePortMock.findByID(anyLong()))
                 .thenReturn(new UserModel());
 
-        Mockito.when(userResponseMapper.toUserResponseDto(any()))
+        Mockito.when(userResponseMapperMock.toUserResponseDto(any()))
                 .thenReturn(userResponseDto);
 
         UserResponseDto result = userHandlerMock.findByID(1L);
 
         Assertions.assertEquals(1L,result.getId());
 
+    }
 
 
+    @Test
+    void getAllUsers() {
+        Mockito.when(userServicePortMock.getAllUsers()).thenReturn(List.of());
+        Mockito.when(userResponseMapperMock.toResponseList(any()))
+                .thenReturn(List.of(UserResponseDto.builder()
+                                .id(2L)
+                        .build()));
+
+        var result = userHandlerMock.getAllUsers();
+        Assertions.assertEquals(2L,result.get(0).getId());
 
     }
 
-     */
+    @Test
+    void findOneByEmail() {
+        Mockito.when(userServicePortMock.findOneByEmail(any()))
+                .thenReturn(new UserModel());
+        Mockito.when(userResponseMapperMock.toUserResponseDto(any()))
+                .thenReturn(UserResponseDto.builder()
+                        .id(2L)
+                        .build());
+
+        var result = userHandlerMock.findOneByEmail(any());
+        Assertions.assertEquals(2L,result.getId());
+    }
+
 }

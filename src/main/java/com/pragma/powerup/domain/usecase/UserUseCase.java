@@ -8,8 +8,7 @@ import com.pragma.powerup.domain.exception.PnoneIncorrectException;
 import com.pragma.powerup.domain.model.UserModel;
 import com.pragma.powerup.domain.spi.IUserPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -18,8 +17,6 @@ import java.util.regex.Pattern;
 public class UserUseCase implements IUserServicePort {
     private final IUserPersistencePort userPersistencePort;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     private static final int DIGITS = 13;
 
     public UserUseCase(IUserPersistencePort userPersistencePort) {
@@ -45,8 +42,6 @@ public class UserUseCase implements IUserServicePort {
             throw new EmailIncorrectException();
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         userPersistencePort.saveUser(user);
     }
 
@@ -57,13 +52,19 @@ public class UserUseCase implements IUserServicePort {
             throw new NoDataFoundException("there are no users");
         }
 
-        return userPersistencePort.getAllUsers();
+        return modelList;
     }
 
     @Override
     public  UserModel findByID(Long id) {
 
         return userPersistencePort.findByID(id);
+    }
+
+    @Override
+    public UserModel findOneByEmail(String email) {
+
+        return userPersistencePort.findOneByEmail(email);
     }
 
     private boolean phoneVerify(String phone) {
