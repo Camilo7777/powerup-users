@@ -16,14 +16,12 @@ import java.util.regex.Pattern;
 
 public class UserUseCase implements IUserServicePort {
     private final IUserPersistencePort userPersistencePort;
-
     private static final int DIGITS = 13;
 
     public UserUseCase(IUserPersistencePort userPersistencePort) {
 
         this.userPersistencePort = userPersistencePort;
     }
-
     @Override
     public void saveUser(UserModel user) {
         UserModel userModel = userPersistencePort.findOneByEmail((user.getEmail()));
@@ -57,13 +55,11 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public  UserModel findByID(Long id) {
-
         return userPersistencePort.findByID(id);
     }
 
     @Override
     public UserModel findOneByEmail(String email) {
-
         return userPersistencePort.findOneByEmail(email);
     }
 
@@ -77,12 +73,9 @@ public class UserUseCase implements IUserServicePort {
 
     private boolean emailVerify(String email) {
         String regex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
         Pattern pattern = Pattern.compile(regex);
-
         Matcher mather = pattern.matcher(email);
          return mather.matches();
-
     }
 
 }

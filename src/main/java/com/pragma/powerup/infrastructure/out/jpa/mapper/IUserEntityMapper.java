@@ -14,6 +14,5 @@ import java.util.Optional;
 public interface IUserEntityMapper {
     UserEntity toEntity(UserModel userModel);
     UserModel toUserModel(UserEntity userEntity);
-
     List<UserModel> toUserModelList(List<UserEntity> userEntityList);
 }
