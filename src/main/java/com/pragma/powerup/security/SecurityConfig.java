@@ -33,9 +33,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests().antMatchers("/**/authenticate","/**/logout","/user/email/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/user/saveOwner").hasAnyAuthority("ADMIN")
-                .antMatchers("/user/saveEmployee").hasAnyAuthority("OWNER")
-               // .antMatchers("/user/saveClient").hasAnyAuthority("CLIENT")
+                .antMatchers("/user/Owner").hasAnyAuthority("ADMIN")
+                .antMatchers("/user/Employee").hasAnyAuthority("OWNER")
+                .antMatchers("/user/saveClient").hasAnyAuthority("CLIENT")
                 .anyRequest().authenticated().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilterRequest, UsernamePasswordAuthenticationFilter.class);

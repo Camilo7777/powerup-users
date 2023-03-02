@@ -4,6 +4,10 @@ import com.pragma.powerup.security.AuthenticationRequest;
 import com.pragma.powerup.security.AuthenticationResponse;
 import com.pragma.powerup.security.JWTUtil;
 import com.pragma.powerup.security.RegisterUserDetailsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,12 +36,17 @@ public class AuthController {
     @Autowired
     private JWTUtil jwtUtil;
 
+
+    @Operation(summary = "Authenticate user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User authenticated", content = @Content),
+    })
+
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> createToken(@RequestBody AuthenticationRequest request) throws BadCredentialsException {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getClave()));
             UserDetails userDetails = registerUserDetailsService.loadUserByUsername(request.getEmail());
-                String jwt = jwtUtil.generateToken(userDetails);
-            return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.OK);
+                String jwt = jwtUtil.generateToken(userDetails);return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.OK);
 
     }
 

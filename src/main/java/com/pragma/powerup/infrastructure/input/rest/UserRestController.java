@@ -9,10 +9,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +24,7 @@ public class UserRestController {
 
     @Operation(summary = "Add Owner")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User  created", content = @Content),
-            @ApiResponse(responseCode = "409", description = "User  already exists", content = @Content)
+            @ApiResponse(responseCode = "201", description = "Owner  created", content = @Content),
     })
 
     @PostMapping("/Owner")
@@ -39,8 +36,7 @@ public class UserRestController {
 
     @Operation(summary = "Add Employee")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User  created", content = @Content),
-            @ApiResponse(responseCode = "409", description = "User  already exists", content = @Content)
+            @ApiResponse(responseCode = "201", description = "Employee  created", content = @Content),
     })
 
     @PostMapping("/Employee")
@@ -49,10 +45,9 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Add client")
+    @Operation(summary = "Add Client")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User  created", content = @Content),
-            @ApiResponse(responseCode = "409", description = "User  already exists", content = @Content)
+            @ApiResponse(responseCode = "201", description = "Client  created", content = @Content),
     })
 
     @PostMapping("/Client")
