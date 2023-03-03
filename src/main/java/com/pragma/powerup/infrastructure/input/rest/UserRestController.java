@@ -19,9 +19,7 @@ import java.util.List;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserRestController {
-
     private final UserHandler userHandler;
-
     @Operation(summary = "Add Owner")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Owner  created", content = @Content),
